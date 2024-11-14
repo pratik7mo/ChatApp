@@ -20,6 +20,22 @@ function Signup() {
     return value === password || "Password do not match";
   };
 
+  const validatePassword = (value) => {
+    const hasUpperCase = /[A-Z]./test(value);
+    const hasLowerCase = /[a-z]./test(value);
+    const hasNumber = /\d/.test(value);
+    const hasUnderscore = /_/.test(value);
+    const isLongEnough = value.length >= 8;
+    return (
+      hasUpperCase &&
+      hasLowerCase &&
+      hasNumber &&
+      hasUnderscore &&
+      isLongEnough ||
+      "Password must have at least 8 characters, an uppercase letter, a lowercase letter, a number, and an underscore."
+    );
+  }
+
   const onSubmit = async (data) => {
     const userInfo = {
       fullname: data.fullname,
@@ -56,6 +72,7 @@ function Signup() {
             Chat<span className="text-green-600 font-semibold">App</span>
           </h1>
           <h2 className="text-2xl text-white font-bold">Signup</h2>
+   
           <br />
 
           {/* Full Name */}
@@ -123,7 +140,7 @@ function Signup() {
               type="password"
               className="grow"
               placeholder="Password"
-              {...register("password", { required: true })}
+              {...register("password", { required: true , validate: validatePassword})}
             />
           </label>
           {errors.password && (
