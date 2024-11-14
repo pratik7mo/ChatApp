@@ -21,20 +21,20 @@ function Signup() {
   };
 
   const validatePassword = (value) => {
-    const hasUpperCase = /[A-Z]./test(value);
-    const hasLowerCase = /[a-z]./test(value);
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasLowerCase = /[a-z]/.test(value);
     const hasNumber = /\d/.test(value);
-    const hasUnderscore = /_/.test(value);
+    const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(value);
     const isLongEnough = value.length >= 8;
     return (
-      hasUpperCase &&
-      hasLowerCase &&
-      hasNumber &&
-      hasUnderscore &&
-      isLongEnough ||
-      "Password must have at least 8 characters, an uppercase letter, a lowercase letter, a number, and an underscore."
+      (hasUpperCase &&
+        hasLowerCase &&
+        hasNumber &&
+        hasSymbol &&
+        isLongEnough) ||
+      "Password must have at least 8 characters, an uppercase letter, a lowercase letter, a number, and a special symbol."
     );
-  }
+  };
 
   const onSubmit = async (data) => {
     const userInfo = {
@@ -72,7 +72,6 @@ function Signup() {
             Chat<span className="text-green-600 font-semibold">App</span>
           </h1>
           <h2 className="text-2xl text-white font-bold">Signup</h2>
-   
           <br />
 
           {/* Full Name */}
@@ -94,7 +93,7 @@ function Signup() {
           </label>
           {errors.fullname && (
             <span className="text-red-500 font-semibold">
-              This field is required
+              {errors.fullname.message}
             </span>
           )}
 
@@ -140,12 +139,12 @@ function Signup() {
               type="password"
               className="grow"
               placeholder="Password"
-              {...register("password", { required: true , validate: validatePassword})}
+              {...register("password", { required: true, validate: validatePassword, })}
             />
           </label>
           {errors.password && (
             <span className="text-red-500 font-semibold">
-              This field is required
+              {errors.password.message}
             </span>
           )}
 
